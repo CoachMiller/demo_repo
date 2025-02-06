@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Rick Astley GIF Spaß</title>
+  <style>
+    /* Grundlegendes Styling */
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #222;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    
+    h1 {
+      margin-top: 20px;
+      font-size: 2em;
+    }
+    
+    #startBtn {
+      margin: 30px auto;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      cursor: pointer;
+      background-color: #ff5555;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      transition: background-color 0.3s;
+    }
+    
+    #startBtn:hover {
+      background-color: #ff3333;
+    }
+    
+    /* Container, in dem die GIFs animiert werden */
+    #gifContainer {
+      position: relative;
+      width: 100%;
+      height: calc(100vh - 150px);
+      overflow: hidden;
+      border-top: 2px solid #444;
+    }
+    
+    /* Styling für das Rick Astley GIF */
+    .rickGif {
+      position: absolute;
+      width: 150px;
+      user-select: none;
+      pointer-events: none;
+    }
+    
+    /* Styling für den Rick-Text */
+    #rickText {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2em;
+      font-weight: bold;
+      opacity: 0.9;
+      color: #ffcc00;
+      text-shadow: 2px 2px 4px #000;
+    }
+  </style>
+</head>
+<body>
+  <h1>Willkommen zur Rick Astley Überraschung!</h1>
+  <button id="startBtn">Klicke hier für Spaß!</button>
+  <div id="gifContainer"></div>
+  
+  <script>
+    // Wenn der Button geklickt wird...
+    document.getElementById('startBtn').addEventListener('click', function(){
+      // Button ausblenden
+      this.style.display = 'none';
+      
+      // Rick Astley GIF URL – ersetze diesen Link falls nötig!
+      var gifUrl = "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif";
+      
+      // Anzahl der gleichzeitig animierten GIFs
+      var gifCount = 5;
+      
+      // Für jeden GIF erstelle ein animiertes Element
+      for (var i = 0; i < gifCount; i++) {
+        createAnimatedRick();
+      }
+      
+      // Zeige zusätzlich einen witzigen Text an
+      var rickText = document.createElement("div");
+      rickText.id = "rickText";
+      rickText.textContent = "Never gonna give you up!";
+      document.getElementById("gifContainer").appendChild(rickText);
+      
+      // Lasse den Text nach 3 Sekunden langsam verschwinden
+      setTimeout(function(){
+        rickText.style.transition = "opacity 1s";
+        rickText.style.opacity = "0";
+      }, 3000);
+    });
+    
+    // Funktion, die ein einzelnes animiertes Rick Astley GIF erzeugt
+    function createAnimatedRick() {
+      var container = document.getElementById("gifContainer");
+      var img = document.createElement("img");
+      img.src = "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif"; // Rick Astley GIF
+      img.className = "rickGif";
+      
+      // Setze eine zufällige Startposition innerhalb des Containers
+      var maxX = container.clientWidth - 150;
+      var maxY = container.clientHeight - 150;
+      var posX = Math.random() * maxX;
+      var posY = Math.random() * maxY;
+      img.style.left = posX + "px";
+      img.style.top = posY + "px";
+      
+      container.appendChild(img);
+      
+      // Zufällige Bewegungsrichtung (Geschwindigkeit in x und y)
+      var dx = (Math.random() - 0.5) * 6;
+      var dy = (Math.random() - 0.5) * 6;
+      var angle = 0;
+      
+      // Animationsschleife
+      setInterval(function(){
+        // Aktuelle Position abrufen und neue berechnen
+        posX = parseFloat(img.style.left);
+        posY = parseFloat(img.style.top);
+        posX += dx;
+        posY += dy;
+        
+        // Bei Kollision mit den Container-Rändern umkehren
+        if (posX <= 0 || posX >= maxX) dx = -dx;
+        if (posY <= 0 || posY >= maxY) dy = -dy;
+        
+        // Setze die neue Position
+        img.style.left = posX + "px";
+        img.style.top = posY + "px";
+        
+        // Erhöhe den Rotationswinkel
+        angle += 5;
+        img.style.transform = "rotate(" + angle + "deg)";
+      }, 50);
+    }
+  </script>
+</body>
+</html>
